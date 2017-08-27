@@ -7,7 +7,8 @@ export
 .PHONY: before_install install script after_success
 
 before_install:
-	-git fetch --tags
+	-git fetch --tags && git fetch
+
 ifeq ($(TRAVIS_OS_NAME),linux)
 	make docker_prepare
 endif
