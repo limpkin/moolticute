@@ -3,7 +3,7 @@ PROJECT_NAME := moolticute
 
 TRAVIS_BUILD_DIR := $(shell pwd)
 
-BUILD_TAG := $(shell git tag --points-at HEAD | tail -n 1)
+BUILD_TAG := $(shell git tag --points-at=HEAD --sort version:refname | head -n 1)
 
 CONTAINER_NAME := $(PROJECT_NAME)
 DOCKER_EXEC_ENV ?=
@@ -67,9 +67,18 @@ docker_image_windows:
 # GitHub
 github_upload:
 ifneq ($(BUILD_TAG),)
+ifeq ($(TRAVIS_OS_NAME),linux)
 	$(DOCKER_EXEC) "source docker/tools.sh && \
 	PROJECT_NAME=$(PROJECT_NAME) TRAVIS_OS_NAME=$(TRAVIS_OS_NAME) \
 	create_github_release $(BUILD_TAG)"
+else
+	brew install jq
+	source docker/tools.sh && \
+	osx_setup_fake_home /tmp && \
+	export PATH=$(PATH):$(shell pwd)/scripts/lib && \
+	HOME=/tmp PROJECT_NAME=$(PROJECT_NAME) TRAVIS_OS_NAME=$(TRAVIS_OS_NAME) create_github_release $(BUILD_TAG) && \
+	osx_clean_fake_home /tmp
+endif
 endif
 
 github_access_test:
