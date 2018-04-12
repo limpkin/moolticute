@@ -52,7 +52,7 @@ sudo udevadm control --reload-rules
 For now, no binary releases are out yet. You will need to build the software by following the next step.
 
 Two methods can be used to build, by using QtCreator IDE, or from the command line (typically on Linux). After the build succeeded, two executable is created:
- - mollicuted (the daemon process)
+ - moolticuted (the daemon process)
  - mont (the main GUI app)
 
 ##### Using Qt SDK
@@ -184,5 +184,3 @@ qmake -qt=5 ../Moolticute.pro
 ### Licensing
 
 Moolticute is free software; you can redistribute it and/or modify it under the terms of the GNU Public License as published by the Free Software Foundation; either version 3 of the License or (at your option) any later version.
-
-
